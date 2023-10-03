@@ -16,13 +16,13 @@ export class SignatureMiddleware implements NestMiddleware {
     const timestamp =
       (req.headers.timestamp as string) || (req.query.timestamp as string);
     const accessToken =
-      (req.headers.Authorization as string) ||
+      (req.headers.authorization as string) ||
       (req.query.authorization as string);
 
     const isValidSignature = this.signatureService.validateSignature(
       signature,
       timestamp,
-      accessToken,
+      accessToken.slice('bearer '.length),
       60,
     );
     if (!isValidSignature) {
